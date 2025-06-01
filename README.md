@@ -35,6 +35,33 @@ Our watermarking technology provides:
 - Protection against misinformation and AI hallucinations
 - Trust building in AI-human interactions
 
+##  flowchartProcess Overview
+
+### General AI Watermarking Process
+
+![AI Watermark Process Diagram](assets/ai_watermark_process.svg)
+
+*The diagram source is available in `assets/ai_watermark_process.mermaid` and can be rendered using a Mermaid viewer or online tools. The SVG conversion in the automated environment was unsuccessful.*
+
+<details>
+<summary>View Mermaid Diagram Code</summary>
+
+```mermaid
+graph TD
+    A[Input <br/> (Audio/Video/Text/Image)] --> B{AI Content Generation / Processing};
+    B --> C{Embed Watermark <br/> (with metadata: AI source, confidence, timestamp)};
+    C --> D[Watermarked Content Output];
+    D --> E{Verify / Extract Watermark};
+    E --> F[Extracted Metadata / <br/> Confidence Level];
+
+    %% Styling (optional, but can make it clearer)
+    % classDef default fill:#f9f,stroke:#333,stroke-width:2px;
+    % classDef process fill:#ccf,stroke:#333,stroke-width:2px;
+    % class A,D,F default;
+    % class B,C,E process;
+```
+</details>
+
 ## 🛠️ Implementation Methods
 
 ### Text Watermarking
@@ -62,6 +89,36 @@ and cholesterol, and in environmental monitoring.
 - Metadata embedding for machine-readable confidence data
 - Generation of sample audio data with configurable waveforms (sine, square, sawtooth, noise), frequency, and duration for testing and demonstration (see `examples/example_usage.py`).
 - A command-line tool (`compare_audio.py`) for detailed comparison of original and watermarked audio files, including frequency analysis summaries and playback functionality.
+
+#### Example Audio Processing Workflow
+
+This diagram illustrates the workflow demonstrated in our examples, utilizing the sample audio generation and comparison tools.
+
+![Audio Workflow Diagram](assets/audio_workflow.svg)
+
+*The diagram source is available in `assets/audio_workflow.mermaid` and can be rendered using a Mermaid viewer or online tools. The SVG conversion in the automated environment was unsuccessful.*
+
+<details>
+<summary>View Mermaid Diagram Code</summary>
+
+```mermaid
+graph TD
+    A[Start] --> B[Generate Sample Audio <br/> (`create_sample_audio`)];
+    B --> C[Original Audio File (.wav)];
+    C --> D{Add Watermark <br/> (`AudioWatermarker`)};
+    D --> E[Watermarked Audio File (.wav)];
+    C --> F{Compare Audio & Playback <br/> (`compare_audio.py`)};
+    E --> F;
+    F --> G[Display Analysis & <br/> Play Audio];
+    G --> H[End];
+
+    %% Optional Styling
+    % classDef action fill:#lightgreen,stroke:#333,stroke-width:2px;
+    % classDef file fill:#lightblue,stroke:#333,stroke-width:2px;
+    % class B,D,F action;
+    % class C,E file;
+```
+</details>
 
 ## 📚 Documentation
 

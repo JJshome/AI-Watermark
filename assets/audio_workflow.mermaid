@@ -1,0 +1,15 @@
+graph TD
+    A[Start] --> B[Generate Sample Audio <br/> (`create_sample_audio`)];
+    B --> C[Original Audio File (.wav)];
+    C --> D{Add Watermark <br/> (`AudioWatermarker`)};
+    D --> E[Watermarked Audio File (.wav)];
+    C --> F{Compare Audio & Playback <br/> (`compare_audio.py`)};
+    E --> F;
+    F --> G[Display Analysis & <br/> Play Audio];
+    G --> H[End];
+
+    %% Optional Styling
+    % classDef action fill:#lightgreen,stroke:#333,stroke-width:2px;
+    % classDef file fill:#lightblue,stroke:#333,stroke-width:2px;
+    % class B,D,F action;
+    % class C,E file;

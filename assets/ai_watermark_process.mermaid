@@ -1,0 +1,12 @@
+graph TD
+    A[Input <br/> (Audio/Video/Text/Image)] --> B{AI Content Generation / Processing};
+    B --> C{Embed Watermark <br/> (with metadata: AI source, confidence, timestamp)};
+    C --> D[Watermarked Content Output];
+    D --> E{Verify / Extract Watermark};
+    E --> F[Extracted Metadata / <br/> Confidence Level];
+
+    %% Styling (optional, but can make it clearer)
+    % classDef default fill:#f9f,stroke:#333,stroke-width:2px;
+    % classDef process fill:#ccf,stroke:#333,stroke-width:2px;
+    % class A,D,F default;
+    % class B,C,E process;
