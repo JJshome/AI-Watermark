@@ -72,7 +72,7 @@ Audio watermarks should be non-intrusive while providing confidence information:
 
 - Ensure watermarks don't degrade audio quality
 - Make watermarks resistant to common audio processing
-- Consider providing visual indicators alongside audio playback
+- Consider providing visual indicators alongside audio playback. For example, the `compare_audio.py` utility in this project provides a command-line interface to show frequency analysis summaries before playback.
 
 ### Video Watermarking
 

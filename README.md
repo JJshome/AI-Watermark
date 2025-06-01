@@ -60,13 +60,15 @@ and cholesterol, and in environmental monitoring.
 - Frequency and tonal modifications for confidence indicators in audio
 - Frame-specific markings and color histogram alterations in video
 - Metadata embedding for machine-readable confidence data
+- Generation of sample audio data with configurable waveforms (sine, square, sawtooth, noise), frequency, and duration for testing and demonstration (see `examples/example_usage.py`).
+- A command-line tool (`compare_audio.py`) for detailed comparison of original and watermarked audio files, including frequency analysis summaries and playback functionality.
 
 ## 📚 Documentation
 
 For detailed information on implementing AI Watermark technology:
 - [Technical Implementation Guide](./docs/implementation.md)
 - [API Reference](./docs/api.md)
-- [Sample Applications](./examples)
+- [Sample Applications & Examples](./examples): Demonstrates programmatic usage, including audio generation, watermarking, and comparison workflows.
 
 ## 🔮 Future Development
 

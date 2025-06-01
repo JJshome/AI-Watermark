@@ -11,7 +11,9 @@ import os
 import sys
 import numpy as np
 import scipy.io.wavfile as wavfile
+import scipy.signal
 import cv2
+import subprocess
 
 # Add parent directory to path so we can import our modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -21,7 +23,7 @@ from video_watermark import VideoWatermarker
 from watermark_extractor import WatermarkExtractor
 
 
-def create_sample_audio(output_file, duration=5.0, sample_rate=44100):
+def create_sample_audio(output_file, duration=5.0, sample_rate=44100, waveform='sine', frequency=440.0):
     """
     Create a sample audio file for demonstration.
     
@@ -29,19 +31,23 @@ def create_sample_audio(output_file, duration=5.0, sample_rate=44100):
         output_file: Path to save the audio file
         duration: Duration in seconds
         sample_rate: Sample rate in Hz
+        waveform: Type of waveform ('sine', 'square', 'sawtooth', 'noise')
+        frequency: Frequency of the waveform (Hz), ignored for 'noise'
     """
-    print(f"Creating sample audio file: {output_file}")
+    print(f"Creating sample audio file: {output_file} (waveform: {waveform}, freq: {frequency if waveform != 'noise' else 'N/A'}Hz)")
     
-    # Generate a complex tone (A major chord: A, C#, E)
     t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
     
-    # Frequencies for A4, C#5, E5
-    freqs = [440.0, 554.37, 659.25]
-    
-    # Create the waveform
-    signal = np.zeros_like(t)
-    for freq in freqs:
-        signal += 0.2 * np.sin(2 * np.pi * freq * t)
+    if waveform == 'sine':
+        signal = 0.5 * np.sin(2 * np.pi * frequency * t)
+    elif waveform == 'square':
+        signal = 0.5 * np.sign(np.sin(2 * np.pi * frequency * t))
+    elif waveform == 'sawtooth':
+        signal = 0.5 * scipy.signal.sawtooth(2 * np.pi * frequency * t)
+    elif waveform == 'noise':
+        signal = 0.5 * np.random.uniform(-1, 1, size=t.shape)
+    else:
+        raise ValueError(f"Unsupported waveform: {waveform}. Choose 'sine', 'square', 'sawtooth', or 'noise'.")
     
     # Add a fade in/out
     fade_samples = int(0.1 * sample_rate)
@@ -128,7 +134,8 @@ def audio_watermark_example():
     
     # Create a sample audio file
     sample_audio = os.path.join(output_dir, "sample_audio.wav")
-    create_sample_audio(sample_audio)
+    # Generate a 3-second sine wave at 440Hz
+    create_sample_audio(sample_audio, waveform='sine', frequency=440.0, duration=3.0, sample_rate=44100)
     
     # Create an AudioWatermarker instance
     watermarker = AudioWatermarker(
@@ -160,6 +167,23 @@ def audio_watermark_example():
         print(f"Carrier Energy: {analysis.get('carrier_energy', 0)}")
         print(f"Secondary Energy: {analysis.get('secondary_energy', 0)}")
         print(f"Likely AI Generated: {'Yes' if analysis.get('likely_ai_generated', False) else 'No'}")
+
+    # After watermarking, call the comparison script
+    print("\nLaunching audio comparison tool...")
+    # Assuming compare_audio.py is in the parent directory of 'examples'
+    compare_script_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "compare_audio.py")
+
+    if os.path.exists(compare_script_path):
+        try:
+            # Use sys.executable to ensure the script is run with the same Python interpreter
+            subprocess.run([sys.executable, compare_script_path, sample_audio, watermarked_audio], check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Error running compare_audio.py: {e}")
+        except FileNotFoundError:
+            print(f"Error: Python interpreter '{sys.executable}' not found.") # Should not happen
+    else:
+        print(f"Error: compare_audio.py not found at expected path: {compare_script_path}")
+        print("Please ensure 'compare_audio.py' is in the project's root directory.")
 
 
 def video_watermark_example():

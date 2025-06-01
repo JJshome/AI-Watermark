@@ -199,3 +199,30 @@ The API has the following rate limits:
 ## Patent Information
 
 The AI Watermark technology is based on patents by Ucaretron Inc. For licensing information, please contact the repository owner.
+
+---
+
+## Python Utilities & Example Scripts
+
+While the core API above is presented in a JavaScript-like syntax for web-centric applications, this project also includes Python-based utilities and examples for backend processing, testing, and demonstration of watermarking concepts.
+
+### Sample Audio Generation
+
+-   **Function**: `create_sample_audio()` located in `examples/example_usage.py`.
+-   **Purpose**: Generates sample WAV audio files with various configurable properties.
+-   **Features**:
+    -   Waveforms: 'sine', 'square', 'sawtooth', 'noise'.
+    -   Configurable frequency (for tonal waveforms), duration, and sample rate.
+-   **Usage**: Useful for creating test carriers for audio watermarking experiments or demonstrations. See `examples/example_usage.py` for how it's used in a workflow.
+
+### Audio Comparison Tool
+
+-   **Script**: `compare_audio.py` (located in the project root).
+-   **Purpose**: A command-line tool to analyze and compare two audio files (e.g., an original and its watermarked version).
+-   **Features**:
+    -   Accepts paths to two audio files as command-line arguments.
+    -   Performs frequency analysis (e.g., energy at typical watermarking carrier frequencies) on both files and prints a JSON summary.
+    -   Provides an interactive CLI menu to play either the original or the watermarked audio file.
+    -   OS-aware playback using default system players (`aplay` for Linux, `afplay` for macOS, PowerShell for Windows).
+-   **Usage**: `python compare_audio.py <original_audio_path> <watermarked_audio_path>`
+-   **Example Workflow**: The `examples/example_usage.py` script demonstrates generating a sample audio, watermarking it, and then provides an example of how `compare_audio.py` could be invoked (though in the example, `compare_audio.py` is called via `subprocess` for an integrated demonstration).
